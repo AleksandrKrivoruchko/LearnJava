@@ -2,34 +2,34 @@ import java.util.Random;
 
 public class Polynomial {
     public static String CreatePolynomial(int power) {
-        String res = "";
+        StringBuilder res = new StringBuilder();
         if (power < 1)
             return String.format("Многочлена со степенью %d не существует!", power);
         Random rnd = new Random();
         for (int i = power; i > 0; i--) {
             int tmp = rnd.nextInt(101);
             if (tmp > 0 && i < power && i > 1) {
-                res += " + ";
+                res.append(" + ");
             }
             if (tmp > 1) {
                 if (i > 1) {
-                    res += tmp + "*x^" + i;
+                    res.append(tmp + "*x^" + i);
                 } else {
                     if (res.length() > 0) {
-                        res += " + " + tmp + "*x";
+                        res.append(" + " + tmp + "*x");
                     } else {
-                        res += tmp + "*x";
+                        res.append(tmp + "*x");
                     }
                 }
             } else {
                 if (tmp > 0) {
                     if (i > 1) {
-                        res += "x^" + i;
+                        res.append("x^" + i);
                     } else {
                         if (res.length() > 0) {
-                            res += " + " + "x";
+                            res.append(" + " + "x");
                         } else {
-                            res += "x";
+                            res.append("x");
                         }
                     }
                 }
@@ -40,11 +40,11 @@ public class Polynomial {
             if (tmp > 0) {
                 int temp = rnd.nextInt(101);
                 if (temp > 0) {
-                    res += " + " + temp;
+                    res.append(" + " + temp);
                 }
             }
-            res += " = 0";
+            res.append(" = 0");
         }
-        return res;
+        return res.toString();
     }
 }
