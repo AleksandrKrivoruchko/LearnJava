@@ -36,13 +36,11 @@ public class ArraySort {
         return result;
     }
 
-    
-
     public static int[] CreateArray(int len, int min, int max) {
         int[] arr = new int[len];
         Random rnd = new Random();
         for (int i = 0; i < len; i++) {
-            arr[i] = rnd.nextInt(max);
+            arr[i] = rnd.nextInt(min, max);
         }
         return arr;
     }
@@ -50,8 +48,8 @@ public class ArraySort {
     public static void PrintArray(int[] array) {
         int len = array.length;
         for (int i = 0; i < len; i++) {
-            System.out.printf("%d ", array[i]);
-            if ((i + 1) % 20 == 0) {
+            System.out.printf("%5d ", array[i]);
+            if ((i + 1) % 10 == 0) {
                 System.out.println();
             }
         }

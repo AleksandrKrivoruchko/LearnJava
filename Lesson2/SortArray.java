@@ -9,9 +9,7 @@ public class SortArray {
         }
 
         for (int i = len - 1; i >= 0; i--) {
-            int tmp = arr[0];
-            arr[0] = arr[i];
-            arr[i] = tmp;
+            Swap(arr, 0, i);
             BuildingHeap(arr, i, 0);
         }
     }
@@ -30,12 +28,16 @@ public class SortArray {
         }
 
         if (maxIndex != i) {
-            int tmp = arr[i];
-            arr[i] = arr[maxIndex];
-            arr[maxIndex] = tmp;
+            Swap(arr, i, maxIndex);
 
             BuildingHeap(arr, len, maxIndex);
         }
+    }
+
+    public static void Swap(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 
     public static int[] CreateArray(int len, int min, int max) {
@@ -51,8 +53,8 @@ public class SortArray {
         StringBuilder sb = new StringBuilder();
         int len = arr.length;
         for (int i = 0; i < len; i++) {
-            sb.append(arr[i] + " ");
-            if ((i + 1) % 15 == 0) {
+            sb.append(String.format("%5d", arr[i]));
+            if ((i + 1) % 10 == 0) {
                 sb.append("\n");
             }
         }
