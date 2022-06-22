@@ -1,6 +1,7 @@
 import java.util.Random;
 
 public class SortArray {
+    // Пирамидальная сортировка
     public static void HeapSort(int[] arr) {
         int len = arr.length;
 
@@ -40,11 +41,46 @@ public class SortArray {
         arr[j] = tmp;
     }
 
+    // Сортировка слиянием
+    public static int[] MergeSort(int[] arr, int[] buff, int left, int right) {
+        if (left == right) {
+            buff[left] = arr[left];
+            return buff;
+        }
+
+        int middle = left + (right - left) / 2;
+        int[] lBuff = MergeSort(arr, buff, left, middle);
+        int[] rBuff = MergeSort(arr, buff, middle + 1, right);
+        int[] result = lBuff == arr ? buff : arr;
+
+        int lCurrent = left;
+        int rCurrent = middle + 1;
+        for (int i = left; i <= right; i++) {
+            if (lCurrent <= middle && rCurrent <= right) {
+                if (lBuff[lCurrent] < rBuff[rCurrent]) {
+                    result[i] = lBuff[lCurrent];
+                    lCurrent++;
+                } else {
+                    result[i] = rBuff[rCurrent];
+                    rCurrent++;
+                }
+            } else if (lCurrent <= middle) {
+                result[i] = lBuff[lCurrent];
+                lCurrent++;
+            } else {
+                result[i] = rBuff[rCurrent];
+                rCurrent++;
+            }
+        }
+        return result;
+    }
+
+    // Создание массива длинной len, c целыми числами в диапазоне от min до max
     public static int[] CreateArray(int len, int min, int max) {
         int[] arr = new int[len];
         Random rnd = new Random();
         for (int i = 0; i < len; i++) {
-            arr[i] = rnd.nextInt(min, max + 1);
+            arr[i] = rnd.nextInt(min, max + 1); // version for openjdk 17.0.3 for linux
         }
         return arr;
     }
@@ -59,5 +95,14 @@ public class SortArray {
             }
         }
         return sb.toString();
+    }
+
+    public static int[] CopyArray(int[] arr) {
+        int len = arr.length;
+        int[] tmp = new int[len];
+        for (int i = 0; i < len; i++) {
+            tmp[i] = arr[i];
+        }
+        return tmp;
     }
 }
