@@ -80,7 +80,8 @@ public class SortArray {
         int[] arr = new int[len];
         Random rnd = new Random();
         for (int i = 0; i < len; i++) {
-            arr[i] = rnd.nextInt(min, max + 1); // version for openjdk 17.0.3 for linux
+            // arr[i] = rnd.nextInt(min, max + 1); // version for openjdk 17.0.3 for linux
+            arr[i] = rnd.nextInt(max);  // version for java 18.0.1.1 windows10
         }
         return arr;
     }
