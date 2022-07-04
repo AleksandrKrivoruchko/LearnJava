@@ -1,3 +1,4 @@
+package homework4;
 
 // Реализовать алгоритм перевода из инфиксной записи в постфиксную 
 // для арифметического выражения.
@@ -16,8 +17,8 @@ public class Homewok {
         // StringBuilder sb = new StringBuilder(CalculatingExpression(exp));
         // System.out.println(IsBracketsRight(sb));
         StringBuilder s = new StringBuilder("2+4^3+2");
-        System.out.println(s.substring(2));
-        StringArgs(1, "+", s, dqDouble);
+        System.out.println(s);
+        StringArgs(1, "+", s, dqString, dqDouble);
         String[] txt_double = ParsingExpression(s, dqString, dqDouble);
         for (int i = txt_double.length - 1; i >= 0; i--) {
             System.out.printf("%s ", txt_double[i]);
@@ -35,9 +36,9 @@ public class Homewok {
             // }
         }
         System.out.println();
-        
+
         System.out.println(dqDouble.size());
-        System.out.println(dqDouble.pop()+ "  " + dqDouble.pop());
+        // System.out.println(dqDouble.pop() + "  " + dqDouble.pop());
         // System.out.printf("%f %s %f\n", dqDouble.pop(),
         // dqString.pop(), dqDouble.pop());
         // System.out.println(sb);
@@ -69,7 +70,7 @@ public class Homewok {
     }
 
     static String[] ParsingExpression(StringBuilder sb, ArrayDeque<String> dqString,
-        ArrayDeque<Double> dqDouble) {
+            ArrayDeque<Double> dqDouble) {
         String[] op = { "-", "+", "/", "*", "^" };
         int len = op.length;
         for (int i = 0; i < len; i++) {
@@ -94,7 +95,8 @@ public class Homewok {
         }
     }
 
-    static void StringArgs(int index, String op, StringBuilder sb, ArrayDeque<Double> dqDouble) {
+    static void StringArgs(int index, String op, StringBuilder sb,
+        ArrayDeque<String> dqString, ArrayDeque<Double> dqDouble) {
         int ks = index + 1;
         int ke = ks;
         // String[] str = new String[2];
@@ -106,7 +108,7 @@ public class Homewok {
         double value = Double.parseDouble(str);
         dqDouble.push(value);
         ks = index-1;
-        System.out.println(ks);
+        // System.out.println(ks);
         while(Character.isDigit(sb.charAt(ks))) {
             ks--;
             if(ks < 0) {
@@ -115,9 +117,12 @@ public class Homewok {
             }
         }
         str = sb.substring(ks, index);
-        System.out.println(str);
+        // System.out.println(str);
         value = Double.parseDouble(str);
         dqDouble.push(value);
+        dqString.push(op);
+        value = Calculate(dqString, dqDouble);
+        // System.out.println(value);
     }
 
     static boolean IsBracketsRight(StringBuilder sb1) {
