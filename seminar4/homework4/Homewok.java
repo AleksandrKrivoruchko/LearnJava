@@ -17,7 +17,8 @@ public class Homewok {
         // System.out.println(IsBracketsRight(sb));
         StringBuilder s = new StringBuilder("2+4^3+2");
         System.out.println(s.substring(2));
-        String[] txt_double = ParsingExpression(s, dqString);
+        StringArgs(1, "+", s, dqDouble);
+        String[] txt_double = ParsingExpression(s, dqString, dqDouble);
         for (int i = txt_double.length - 1; i >= 0; i--) {
             System.out.printf("%s ", txt_double[i]);
             // dqDouble.push(Double.parseDouble(txt_double[i]));
@@ -25,15 +26,18 @@ public class Homewok {
         System.out.println();
         System.out.println(s);
         double tmp = 0;
-        // while (!dqString.isEmpty()) {
-        // // System.out.printf("%s ", dqString.pop());
-        // tmp = Calculate(dqString, dqDouble);
-        // if (!dqString.isEmpty()) {
-        // dqDouble.push(tmp);
-        // }
-        // }
-        // System.out.println(tmp);
+        System.out.println(dqString.size());
+        while (!dqString.isEmpty()) {
+            System.out.printf("%s ", dqString.pop());
+            // tmp = Calculate(dqString, dqDouble);
+            // if (!dqString.isEmpty()) {
+            // dqDouble.push(tmp);
+            // }
+        }
+        System.out.println();
+        
         System.out.println(dqDouble.size());
+        System.out.println(dqDouble.pop()+ "  " + dqDouble.pop());
         // System.out.printf("%f %s %f\n", dqDouble.pop(),
         // dqString.pop(), dqDouble.pop());
         // System.out.println(sb);
@@ -64,20 +68,56 @@ public class Homewok {
         return expTmp;
     }
 
-    static String[] ParsingExpression(StringBuilder sb, ArrayDeque<String> dqString) {
-        String[] operations = { "-", "+", "/", "*", "^" };
-        int len = operations.length;
+    static String[] ParsingExpression(StringBuilder sb, ArrayDeque<String> dqString,
+        ArrayDeque<Double> dqDouble) {
+        String[] op = { "-", "+", "/", "*", "^" };
+        int len = op.length;
         for (int i = 0; i < len; i++) {
-            int tmpIndex = sb.indexOf(operations[i]);
+            int tmpIndex = sb.indexOf(op[i]);
             // System.out.println(tmpIndex);
             if (tmpIndex != -1) {
-                dqString.push(sb.substring(tmpIndex, tmpIndex + 1));
-                sb.replace(tmpIndex, tmpIndex + 1, ",");
+                ReplaceOperation(tmpIndex, i, sb, op, dqString, dqDouble);
             }
+
         }
         String[] txt = sb.toString().split(",");
         // System.out.println();
         return txt;
+    }
+
+    static void ReplaceOperation(int index, int i, StringBuilder sb,
+            String[] op, ArrayDeque<String> dqString, ArrayDeque<Double> dqDouble) {
+        while (index != -1) {
+            dqString.push(op[i]);
+            sb.replace(index, index + 1, ",");
+            index = sb.indexOf(op[i], index + 1);
+        }
+    }
+
+    static void StringArgs(int index, String op, StringBuilder sb, ArrayDeque<Double> dqDouble) {
+        int ks = index + 1;
+        int ke = ks;
+        // String[] str = new String[2];
+        // Character ch = sb.charAt(ke);
+        while(Character.isDigit(sb.charAt(ke))) {
+            ke++;
+        }
+        String str = sb.substring(ks, ke);
+        double value = Double.parseDouble(str);
+        dqDouble.push(value);
+        ks = index-1;
+        System.out.println(ks);
+        while(Character.isDigit(sb.charAt(ks))) {
+            ks--;
+            if(ks < 0) {
+                ks = 0;
+                break;
+            }
+        }
+        str = sb.substring(ks, index);
+        System.out.println(str);
+        value = Double.parseDouble(str);
+        dqDouble.push(value);
     }
 
     static boolean IsBracketsRight(StringBuilder sb1) {
