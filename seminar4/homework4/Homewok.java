@@ -5,6 +5,7 @@
 // Написать программу вычисляющую значение сложного арифметического выражения. 
 // Для простоты - выражение всегда вычисляемое
 // Пример: (2^3 * (10 / (5 - 3)))^(Sin(Pi)) ответ 
+import java.lang.reflect.WildcardType;
 import java.util.ArrayDeque;
 
 public class Homewok {
@@ -70,7 +71,7 @@ public class Homewok {
         for (int i = 0; i < len; i++) {
             int tmpIndex = sb.indexOf(operations[i]);
             // System.out.println(tmpIndex);
-            if (tmpIndex != -1) {
+            wile() {
                 dqString.push(sb.substring(tmpIndex, tmpIndex + 1));
                 sb.replace(tmpIndex, tmpIndex + 1, ",");
             }
