@@ -89,7 +89,6 @@ public class Homewok {
 
     static void StringArgs(int index, String op, StringBuilder sb,
             ArrayDeque<String> dqString, ArrayDeque<Double> dqDouble) {
-
         int ks = index + 1;
         if (index == 0 && op == "-") {
             ks = 0;
