@@ -11,7 +11,7 @@ public class Mather {
 
     public Mather(String expression) {
         infixExpr = expression;
-        postfixExpr = ToPostfix(infixExpr + "\r");
+        postfixExpr = ToPostfix(infixExpr + "\n");
     }
 
     public String GetPostfix() {
@@ -26,7 +26,6 @@ public class Mather {
             if (Character.isDigit(num)) {
                 strNumber += num;
             } else {
-                pos--;
                 break;
             }
         }
@@ -39,7 +38,9 @@ public class Mather {
         for (int i = 0; i < infixExpr.length(); i++) {
             char c = infixExpr.charAt(i);
             if (Character.isDigit(c)) {
-                postfixExpr = GetStingNumber(infixExpr, i) + " ";
+                String tmp = GetStingNumber(infixExpr, i);
+                i = i + tmp.length() - 1;
+                postfixExpr += tmp + " ";
             } else {
                 if (c == '(') {
                     stack.push(c);

@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 public class PosfixTest {
     public static void main(String[] args) {
