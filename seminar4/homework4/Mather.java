@@ -91,4 +91,52 @@ public class Mather {
         }
         return -1;
     }
+
+    private double Execute(char op, double first, double second) {
+        switch (op) {
+            case '+':
+                return first + second;
+            case '-':
+                return first - second;
+            case '*':
+                return first * second;
+            case '/':
+                return first / second;
+            case '^':
+                return Math.pow(first, second);
+            default:
+                return 0;
+        }
+    }
+
+    public double Calc() {
+        ArrayDeque<Double> locals = new ArrayDeque<>();
+        int counter = 0;
+        for (int i = 0; i < postfixExpr.length(); i++) {
+            char c = postfixExpr.charAt(i);
+            if (Character.isDigit(c)) {
+                String tmp = GetStingNumber(postfixExpr, i);
+                i = i + tmp.length() - 1;
+                Double x = Double.parseDouble(tmp);
+                locals.push(x);
+            } else if (IsSymbol(t, c)) {
+                counter++;
+                if (c == '~') {
+                    Double last = locals.isEmpty() ? 0 : locals.pop();
+                    locals.push(Execute('-', 0, last));
+                    System.out.println(counter + "  " + c + last +
+                            " = " + locals.peek());
+                    continue;
+                }
+
+                Double second = locals.isEmpty() ? 0 : locals.pop();
+                Double first = locals.isEmpty() ? 0 : locals.pop();
+
+                locals.push(Execute(c, first, second));
+                System.out.println(counter + "  " + first + " " + c +
+                        " " + second + " = " + locals.peek());
+            }
+        }
+        return locals.pop();
+    }
 }

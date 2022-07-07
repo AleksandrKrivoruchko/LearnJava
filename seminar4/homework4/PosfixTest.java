@@ -9,7 +9,7 @@ public class PosfixTest {
         for (int i = 0; i < t.length; i++) {
             ops.add(t[i]);
         }
-        String exp = "(2 ^ 3 * (10 / (5 - 3)))^(8-(5 + 2))";
+        String exp = "(2 ^ 3 * (10 / (5 - 3)))^(8-(5 + 2))/2 + 5--4";
         exp = exp.trim().replace(" ", "").toLowerCase();
         StringBuilder sb = new StringBuilder(exp);
         ArrayDeque<String> dqArgs = new ArrayDeque<>();
@@ -19,5 +19,7 @@ public class PosfixTest {
         String txt = post.postfixExpr;
         System.out.println(post.infixExpr);
         System.out.println(txt);
+        Double res = post.Calc();
+        System.out.println(res);
     }
 }
