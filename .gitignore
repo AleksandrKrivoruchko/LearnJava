@@ -2,6 +2,12 @@
 *.class
 .idea/
 JavaWork.iml
+*/.idea/
+*/out/
+*/*.iml
+*/*/.idea/
+*/*/out/
+*/*/*.iml
 
 # Log file
 *.log
