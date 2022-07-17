@@ -17,7 +17,7 @@ class Seminar5 {
         int d = 1;
         Map<Integer, String> resH = FindSolution(a,b,c,d);
         if(resH.isEmpty()) {
-            System.out.printf("Для чисел a = %d и b = %d решение не найдено\n", a, b);
+            System.out.printf("For numbers a = %d и b = %d solution isn't find\n", a, b);
         } else {
             for(var item : resH.entrySet()) {
                 System.out.printf("%d  %s\n", item.getKey(), item.getValue());
