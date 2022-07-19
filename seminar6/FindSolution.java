@@ -70,7 +70,7 @@ public class FindSolution {
     }
 
     private void calcExpr(int[] args, int n) {
-        if (isResult(args)) {
+        if (isResult(args, n)) {
             return;
         }
         int boolCount = 0;
@@ -93,7 +93,7 @@ public class FindSolution {
                 }
 
             }
-            if (isResult(args)) {
+            if (isResult(args, n)) {
                 return;
             }
         }
@@ -108,8 +108,13 @@ public class FindSolution {
         args[j] = tmp + i * powOfTen(n);
     }
 
-    private boolean isResult(int[] args) {
-        return args[0] + args[1] == args[2];
+    private boolean isResult(int[] args, int n) {
+        int tmp = args[0] + args[1];
+        if (n == 0)
+            if (tmp > 9) {
+                return tmp % 10 == args[2];
+            }
+        return tmp == args[2];
     }
 
     private boolean isSolution(StringBuilder[] strArr) {

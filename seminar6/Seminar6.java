@@ -7,7 +7,7 @@ import java.util.LinkedList;;
 
 public class Seminar6 {
     public static void main(String[] args) {
-        String str = " 2? + ?5 = 69";
+        String str = " 2? + ?5 = ?3";
         FindSolution sol = new FindSolution(str);
         StringBuilder[] sb = sol.getSbExpr();
         for (var s : sb) {
