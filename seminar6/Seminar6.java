@@ -27,5 +27,11 @@ public class Seminar6 {
             }
             System.out.println();
         }
+        System.out.println(sol.findSolution());
+        int[] tmp = sol.getArgs();
+        for (int i : tmp) {
+            System.out.printf("%d ", i);
+        }
+        System.out.println();
     }
 }

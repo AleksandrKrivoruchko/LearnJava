@@ -1,12 +1,12 @@
 
-import java.util.List;
 import java.util.LinkedList;
 
 public class FindSolution {
     private String expression;
     private StringBuilder[] sbExpr;
-    private List<List<Boolean>> question;
-    private List<List<Integer>> numbers;
+    private LinkedList<LinkedList<Boolean>> question;
+    private LinkedList<LinkedList<Integer>> numbers;
+    private int[] args;
 
     public FindSolution(String str) {
         expression = str;
@@ -14,56 +14,103 @@ public class FindSolution {
         question = new LinkedList<>();
         numbers = new LinkedList<>();
         parsingNumber();
+        args = new int[3];
     }
 
     public StringBuilder[] getSbExpr() {
         return sbExpr;
     }
 
-    public List<List<Boolean>> getQuestion() {
+    public LinkedList<LinkedList<Boolean>> getQuestion() {
         return question;
     }
 
-    public List<List<Integer>> getNumbers() {
+    public LinkedList<LinkedList<Integer>> getNumbers() {
         return numbers;
+    }
+
+    public int[] getArgs() {
+        return args;
     }
 
     private void parsingNumber() {
 
         int tmp = 0;
         for (int i = 0; i < sbExpr.length; i++) {
-            List<Integer> num = new LinkedList<>();
-            List<Boolean> quest = new LinkedList<>();
+            LinkedList<Integer> num = new LinkedList<>();
+            LinkedList<Boolean> quest = new LinkedList<>();
             for (int j = 0; j < sbExpr[i].length(); j++) {
                 tmp = getDigit(sbExpr[i].charAt(j));
                 if (tmp < 0) {
-                    quest.add(true);
-                    num.add(0);
+                    quest.addFirst(true);
+                    num.addFirst(0);
                 } else {
-                    quest.add(false);
-                    num.add(tmp);
+                    quest.addFirst(false);
+                    num.addFirst(tmp);
                 }
             }
             question.add(quest);
             numbers.add(num);
-            // quest.clear();
-            // num.clear();
         }
     }
 
-    // public boolean findSolution(StringBuilder[] sb) {
-    // if (!isSolution(sbExpr)) {
-    // return false;
-    // }
-    // int len = sb.length;
-    // int[] indexSb = new int[len];
-    // for (int i = 0; i < len; i++) {
-    // indexSb[i] = sb[i].length() - 1;
-    // }
-    // while (indexSb[len - 1] >= 0) {
+    public boolean findSolution() {
+        if (!isSolution(sbExpr)) {
+            return false;
+        }
+        int n = 0;
+        while (!numbers.get(0).isEmpty()) {
+            for (int i = 0; i < numbers.size(); i++) {
+                args[i] += numbers.get(i).pop() * powOfTen(n);
+            }
+            calcExpr(args, n);
+            n++;
+        }
+        return true;
+    }
 
-    // }
-    // }
+    private void calcExpr(int[] args, int n) {
+        if (isResult(args)) {
+            return;
+        }
+        int boolCount = 0;
+        boolean[] temp = new boolean[3];
+        for (int i = 0; i < question.get(n).size(); i++) {
+            if (question.get(n).get(i)) {
+                boolCount++;
+                temp[i] = true;
+            }
+        }
+        oneCalc(args, temp, n);
+
+    }
+
+    private void oneCalc(int[] args, boolean[] flags, int n) {
+        for (int i = 1; i < 10; i++) {
+            for (int j = 0; j < flags.length; j++) {
+                if (flags[j]) {
+                    replaceNumber(args, j, n, i);
+                }
+
+            }
+            if (isResult(args)) {
+                return;
+            }
+        }
+    }
+
+    private void replaceNumber(int[] args, int j, int n, int i) {
+        if (n == 0) {
+            args[j] = i;
+            return;
+        }
+        int tmp = args[j] % powOfTen(n);
+        args[j] = tmp + i * powOfTen(n);
+    }
+
+    private boolean isResult(int[] args) {
+        return args[0] + args[1] == args[2];
+    }
 
     private boolean isSolution(StringBuilder[] strArr) {
         int a = strArr[0].length();
