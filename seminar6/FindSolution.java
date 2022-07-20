@@ -55,7 +55,7 @@ public class FindSolution {
     }
 
     public boolean findSolution() {
-        if (!isSolution(sbExpr)) {
+        if (!isSolution()) {
             return false;
         }
         int n = 0;
@@ -63,14 +63,14 @@ public class FindSolution {
             for (int i = 0; i < numbers.size(); i++) {
                 args[i] += numbers.get(i).pop() * powOfTen(n);
             }
-            calcExpr(args, n);
+            calcExpr(n);
             n++;
         }
         return true;
     }
 
-    private void calcExpr(int[] args, int n) {
-        if (isResult(args, n)) {
+    private void calcExpr(int n) {
+        if (isResult(n)) {
             return;
         }
         int boolCount = 0;
@@ -81,25 +81,33 @@ public class FindSolution {
                 temp[i] = true;
             }
         }
-        oneCalc(args, temp, n);
+        oneCalc(temp, n);
 
     }
 
-    private void oneCalc(int[] args, boolean[] flags, int n) {
-        for (int i = 1; i < 10; i++) {
-            for (int j = 0; j < flags.length; j++) {
-                if (flags[j]) {
-                    replaceNumber(args, j, n, i);
+    private void oneCalc(boolean[] flags, int n) {
+        for (int i = 0; i < 10; i++) {
+            if (flags[0]) {
+                replaceNumber(0, n, i);
+            }
+            for (int j = 0; j < 10; j++) {
+                if (flags[1]) {
+                    replaceNumber(1, n, j);
                 }
+                for (int k = 0; k < 10; k++) {
+                    if (flags[2]) {
+                        replaceNumber(2, n, k);
+                    }
+                    if (isResult(n)) {
+                        return;
+                    }
+                }
+            }
 
-            }
-            if (isResult(args, n)) {
-                return;
-            }
         }
     }
 
-    private void replaceNumber(int[] args, int j, int n, int i) {
+    private void replaceNumber(int j, int n, int i) {
         if (n == 0) {
             args[j] = i;
             return;
@@ -108,7 +116,7 @@ public class FindSolution {
         args[j] = tmp + i * powOfTen(n);
     }
 
-    private boolean isResult(int[] args, int n) {
+    private boolean isResult(int n) {
         int tmp = args[0] + args[1];
         if (n == 0)
             if (tmp > 9) {
@@ -117,10 +125,10 @@ public class FindSolution {
         return tmp == args[2];
     }
 
-    private boolean isSolution(StringBuilder[] strArr) {
-        int a = strArr[0].length();
-        int b = strArr[1].length();
-        int c = strArr[2].length();
+    private boolean isSolution() {
+        int a = sbExpr[0].length();
+        int b = sbExpr[1].length();
+        int c = sbExpr[2].length();
         return a <= c && b <= c;
     }
 

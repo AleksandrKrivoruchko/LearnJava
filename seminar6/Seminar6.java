@@ -2,12 +2,10 @@
 // Задано уравнение вида q + w = e, q, w, e >= 0. Некоторые цифры могут быть заменены знаком вопроса, 
 // например 2? + ?5 = 69. Требуется восстановить выражение до верного равенства.
 //  Предложить хотя бы одно решение или сообщить, что его нет.
-import java.util.List;
-import java.util.LinkedList;;
 
 public class Seminar6 {
     public static void main(String[] args) {
-        String str = " 2? + ?5 = ?3";
+        String str = " 2? + ?5 = 26";
         FindSolution sol = new FindSolution(str);
         StringBuilder[] sb = sol.getSbExpr();
         for (var s : sb) {
