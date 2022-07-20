@@ -73,19 +73,27 @@ public class FindSolution {
         if (isResult(n)) {
             return;
         }
-        int boolCount = 0;
+        // int boolCount = 0;
         boolean[] temp = new boolean[3];
-        for (int i = 0; i < question.get(n).size(); i++) {
-            if (question.get(n).get(i)) {
-                boolCount++;
+        for (int i = 0; i < question.size(); i++) {
+            if (question.get(i).get(n)) {
+                // boolCount++;
                 temp[i] = true;
             }
+            // System.out.printf("")
         }
         oneCalc(temp, n);
 
     }
 
     private void oneCalc(boolean[] flags, int n) {
+        int m = 10;
+        if (question.get(2).size() > n + 1) {
+            if (question.get(2).get(n + 1)) {
+                m = 19;
+                flags[2] = true;
+            }
+        }
         for (int i = 0; i < 10; i++) {
             if (flags[0]) {
                 replaceNumber(0, n, i);
@@ -94,7 +102,7 @@ public class FindSolution {
                 if (flags[1]) {
                     replaceNumber(1, n, j);
                 }
-                for (int k = 0; k < 10; k++) {
+                for (int k = 0; k < m; k++) {
                     if (flags[2]) {
                         replaceNumber(2, n, k);
                     }
@@ -122,6 +130,11 @@ public class FindSolution {
             if (tmp > 9) {
                 return tmp % 10 == args[2];
             }
+        if (question.get(2).size() > n + 1 && n != 0) {
+            if (tmp < powOfTen(n + 1)) {
+                return false;
+            }
+        }
         return tmp == args[2];
     }
 

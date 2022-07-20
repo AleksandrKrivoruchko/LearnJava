@@ -5,7 +5,7 @@
 
 public class Seminar6 {
     public static void main(String[] args) {
-        String str = " 2? + ?5 = 26";
+        String str = " 2? + ?5 = 119";
         FindSolution sol = new FindSolution(str);
         StringBuilder[] sb = sol.getSbExpr();
         for (var s : sb) {
