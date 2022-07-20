@@ -4,7 +4,7 @@
 
 public class Seminar6 {
     public static void main(String[] args) {
-        String str = " 12? + 3?5 = ?64";
+        String str = " 92? + 3?6 = ??61";
         StringBuilder[] strArr = parsingExpression(str);
         for (StringBuilder s : strArr) {
             System.out.println(s);
@@ -16,14 +16,22 @@ public class Seminar6 {
         System.out.println(str);
 
         findSolution(strArr);
-        strArr[0].append(" + ").append(strArr[1]).append(" = ").append(strArr[2]);
-        System.out.println(strArr[0]);
+        int a = Integer.parseInt(strArr[0].toString());
+        int b = Integer.parseInt(strArr[1].toString());
+        int c = Integer.parseInt(strArr[2].toString());
+        if (a + b == c) {
+            strArr[0].append(" + ").append(strArr[1]).append(" = ").append(strArr[2]);
+            System.out.println(strArr[0]);
+        } else {
+            System.out.println("Для выражения " + str + " решения нет");
+            System.exit(1);
+        }
     }
 
     static void findSolution(StringBuilder[] sb) {
         int[] indexSb = {sb[0].length() - 1, sb[1].length() - 1, sb[2].length() - 1};
         boolean[] tmp;
-        int[] over = new int[indexSb[2]];
+        int[] over = new int[indexSb[2]+1];
         int k = 0;
         while (indexSb[2] >= 0) {
             tmp = questionMark(sb[0].charAt(indexSb[0]), sb[1].charAt(indexSb[1]),
@@ -44,13 +52,17 @@ public class Seminar6 {
                     }
                 }
             }
-            k++;
+
             for(int i = 0; i < indexSb.length; i++) {
                 indexSb[i]--;
                 if(indexSb[i] < 0) {
+                    if(indexSb[2] == 1 && sb[2].charAt(0) == '?') {
+                        sb[2].setCharAt(0, '1');
+                    }
                     indexSb[2] = -1;
                 }
             }
+            k++;
         }
     }
 
