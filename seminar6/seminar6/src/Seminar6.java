@@ -4,7 +4,7 @@
 
 public class Seminar6 {
     public static void main(String[] args) {
-        String str = " 2? + ?5 = 69";
+        String str = " 12? + 3?5 = ?64";
         StringBuilder[] strArr = parsingExpression(str);
         for (StringBuilder s : strArr) {
             System.out.println(s);
@@ -23,20 +23,28 @@ public class Seminar6 {
     static void findSolution(StringBuilder[] sb) {
         int[] indexSb = {sb[0].length() - 1, sb[1].length() - 1, sb[2].length() - 1};
         boolean[] tmp;
+        int[] over = new int[indexSb[2]];
+        int k = 0;
         while (indexSb[2] >= 0) {
             tmp = questionMark(sb[0].charAt(indexSb[0]), sb[1].charAt(indexSb[1]),
                     sb[2].charAt(indexSb[2]));
             if(tmp[0] || tmp[1] || tmp[2]) {
                 int x = findDigit(sb[0].charAt(indexSb[0]), sb[1].charAt(indexSb[1]),
-                        sb[2].charAt(indexSb[2]), tmp);
+                        sb[2].charAt(indexSb[2]), tmp, over, k);
                 if(x != -1) {
                     for(int i = 0; i < tmp.length; i++) {
                         if(tmp[i]) {
-                            sb[i].setCharAt(indexSb[i], getChar(x));
+                            if(k == 0) {
+                                sb[i].setCharAt(indexSb[i], getChar(x));
+                            } else {
+                                sb[i].setCharAt(indexSb[i], getChar(x + over[k-1]));
+                            }
+
                         }
                     }
                 }
             }
+            k++;
             for(int i = 0; i < indexSb.length; i++) {
                 indexSb[i]--;
                 if(indexSb[i] < 0) {
@@ -46,24 +54,26 @@ public class Seminar6 {
         }
     }
 
-    static int findDigit(char a, char b, char c, boolean[] tmp) {
+    static int findDigit(char a, char b, char c, boolean[] tmp, int[] over, int k) {
         if(tmp[0] && !tmp[1] && !tmp[2]) {
-            return calcDigit(getDigit(c) - getDigit(b));
+            return calcDigit(getDigit(c) - getDigit(b), over, k);
         }
         if (!tmp[0] && tmp[1] && !tmp[2]) {
-            return calcDigit(getDigit(c) - getDigit(a));
+            return calcDigit(getDigit(c) - getDigit(a), over, k);
         }
         if(!tmp[0] && !tmp[1] && tmp[2]) {
-            return calcDigit(getDigit(a) + getDigit(b));
+            return calcDigit(getDigit(a) + getDigit(b), over, k);
         }
         return -1;
     }
 
-    static int calcDigit(int x) {
+    static int calcDigit(int x, int[] over, int k) {
         if (x < 0) {
+            over[k] = -1;
             return x + 10;
         }
         if (x > 9) {
+            over[k] = 1;
             return x%10;
         }
         return x;
