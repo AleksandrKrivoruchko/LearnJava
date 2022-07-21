@@ -1,15 +1,17 @@
+package seminar6.src;
+
 // Задано уравнение вида q + w = e, q, w, e >= 0. Некоторые цифры могут быть заменены знаком вопроса, 
 // например 2? + ?5 = 69. Требуется восстановить выражение до верного равенства.
 //  Предложить хотя бы одно решение или сообщить, что его нет.
 
 public class Seminar6 {
     public static void main(String[] args) {
-        String str = " 92? + 3?6 = ??61";
+        String str = " ?2? + ??2 = ?4??";
         StringBuilder[] strArr = parsingExpression(str);
         for (StringBuilder s : strArr) {
             System.out.println(s);
         }
-        if(!isSolution(strArr)) {
+        if (!isSolution(strArr)) {
             System.out.println("Для выражения " + str + " решения нет");
             System.exit(1);
         }
@@ -29,23 +31,32 @@ public class Seminar6 {
     }
 
     static void findSolution(StringBuilder[] sb) {
-        int[] indexSb = {sb[0].length() - 1, sb[1].length() - 1, sb[2].length() - 1};
+        int[] indexSb = { sb[0].length() - 1, sb[1].length() - 1, sb[2].length() - 1 };
         boolean[] tmp;
-        int[] over = new int[indexSb[2]+1];
+        int[] over = new int[indexSb[2] + 1];
         int k = 0;
         while (indexSb[2] >= 0) {
             tmp = questionMark(sb[0].charAt(indexSb[0]), sb[1].charAt(indexSb[1]),
                     sb[2].charAt(indexSb[2]));
-            if(tmp[0] || tmp[1] || tmp[2]) {
+            int count = 0;
+            for (boolean item : tmp) {
+                if (item) {
+                    count++;
+                }
+            }
+            if (count == 2) {
+                findTwoDigit(sb, indexSb, tmp);
+            }
+            if (tmp[0] || tmp[1] || tmp[2]) {
                 int x = findDigit(sb[0].charAt(indexSb[0]), sb[1].charAt(indexSb[1]),
                         sb[2].charAt(indexSb[2]), tmp, over, k);
-                if(x != -1) {
-                    for(int i = 0; i < tmp.length; i++) {
-                        if(tmp[i]) {
-                            if(k == 0) {
+                if (x != -1) {
+                    for (int i = 0; i < tmp.length; i++) {
+                        if (tmp[i]) {
+                            if (k == 0) {
                                 sb[i].setCharAt(indexSb[i], getChar(x));
                             } else {
-                                sb[i].setCharAt(indexSb[i], getChar(x + over[k-1]));
+                                sb[i].setCharAt(indexSb[i], getChar(x + over[k - 1]));
                             }
 
                         }
@@ -53,10 +64,10 @@ public class Seminar6 {
                 }
             }
 
-            for(int i = 0; i < indexSb.length; i++) {
+            for (int i = 0; i < indexSb.length; i++) {
                 indexSb[i]--;
-                if(indexSb[i] < 0) {
-                    if(indexSb[2] == 1 && sb[2].charAt(0) == '?') {
+                if (indexSb[i] < 0) {
+                    if (indexSb[2] == 1 && sb[2].charAt(0) == '?') {
                         sb[2].setCharAt(0, '1');
                     }
                     indexSb[2] = -1;
@@ -64,19 +75,43 @@ public class Seminar6 {
             }
             k++;
         }
+        for (StringBuilder s : sb) {
+            System.out.println(s);
+        }
     }
 
     static int findDigit(char a, char b, char c, boolean[] tmp, int[] over, int k) {
-        if(tmp[0] && !tmp[1] && !tmp[2]) {
+        if (tmp[0] && !tmp[1] && !tmp[2]) {
             return calcDigit(getDigit(c) - getDigit(b), over, k);
         }
         if (!tmp[0] && tmp[1] && !tmp[2]) {
             return calcDigit(getDigit(c) - getDigit(a), over, k);
         }
-        if(!tmp[0] && !tmp[1] && tmp[2]) {
+        if (!tmp[0] && !tmp[1] && tmp[2]) {
             return calcDigit(getDigit(a) + getDigit(b), over, k);
         }
         return -1;
+    }
+
+    static void findTwoDigit(StringBuilder[] sb, int[] indexSb, boolean[] tmp) {
+        if (tmp[0] && tmp[1] && !tmp[2]) {
+            if (getDigit(sb[2].charAt(indexSb[2])) == 0) {
+                sb[0].setCharAt(indexSb[0], '0');
+            } else {
+                sb[0].setCharAt(indexSb[0], '1');
+            }
+            tmp[0] = false;
+            return;
+        }
+        if (tmp[0] && !tmp[1] && tmp[2]) {
+            sb[0].setCharAt(indexSb[0], '1');
+            tmp[0] = false;
+            return;
+        }
+        if (!tmp[0] && tmp[1] && tmp[2]) {
+            sb[1].setCharAt(indexSb[1], '1');
+            tmp[1] = false;
+        }
     }
 
     static int calcDigit(int x, int[] over, int k) {
@@ -86,7 +121,7 @@ public class Seminar6 {
         }
         if (x > 9) {
             over[k] = 1;
-            return x%10;
+            return x % 10;
         }
         return x;
     }
@@ -125,10 +160,10 @@ public class Seminar6 {
 
     static boolean[] questionMark(char a, char b, char c) {
         boolean[] mark = new boolean[3];
-        if(a == '?') {
+        if (a == '?') {
             mark[0] = true;
         }
-        if(b == '?') {
+        if (b == '?') {
             mark[1] = true;
         }
         if (c == '?') {
