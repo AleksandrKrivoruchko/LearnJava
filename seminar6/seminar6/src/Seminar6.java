@@ -6,7 +6,7 @@ package seminar6.src;
 
 public class Seminar6 {
     public static void main(String[] args) {
-        String str = " ?2? + ??2 = ?4??";
+        String str = " ?2? + ??? = ?8??";
         StringBuilder[] strArr = parsingExpression(str);
         for (StringBuilder s : strArr) {
             System.out.println(s);
@@ -44,10 +44,14 @@ public class Seminar6 {
                     count++;
                 }
             }
-            if (count == 2) {
+            if (count == 3) {
+                sb[2].setCharAt(indexSb[2], '1');
+                tmp[2] = false;
+            }
+            if (count >= 2) {
                 findTwoDigit(sb, indexSb, tmp);
             }
-            if (tmp[0] || tmp[1] || tmp[2]) {
+            if (count > 0) {
                 int x = findDigit(sb[0].charAt(indexSb[0]), sb[1].charAt(indexSb[1]),
                         sb[2].charAt(indexSb[2]), tmp, over, k);
                 if (x != -1) {
@@ -95,10 +99,12 @@ public class Seminar6 {
 
     static void findTwoDigit(StringBuilder[] sb, int[] indexSb, boolean[] tmp) {
         if (tmp[0] && tmp[1] && !tmp[2]) {
-            if (getDigit(sb[2].charAt(indexSb[2])) == 0) {
+            if (getDigit(sb[2].charAt(indexSb[2])) == 0 &&
+                    indexSb[2] != 1) {
                 sb[0].setCharAt(indexSb[0], '0');
             } else {
-                sb[0].setCharAt(indexSb[0], '1');
+                int a = getDigit(sb[2].charAt(indexSb[2]));
+                sb[0].setCharAt(indexSb[0], getChar(a + 1));
             }
             tmp[0] = false;
             return;
